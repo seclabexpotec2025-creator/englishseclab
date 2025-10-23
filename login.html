@@ -160,49 +160,48 @@
         </nav>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <h1>Inicio de Sesión</h1>
-      <p>Accede a tu cuenta para continuar con tus actividades y recursos de SecLab.</p>
-    </div>
-  </section>
+<section class="hero">
+  <div class="container">
+    <h1>Log In</h1>
+    <p>Access your account to continue with your SecLab activities and resources.</p>
+  </div>
+</section>
 
-  <!-- LOGIN -->
-  <section class="auth-wrap">
-    <div class="Formulario">
-      <h1>Inicio de Sesión</h1>
-      <form id="loginForm" method="post" autocomplete="off">
-        <div class="username">
-          <input type="text" id="usuario" name="usuario" required placeholder="Nombre de usuario">
-          <label for="usuario">Nombre de usuario</label>
-        </div>
+<!-- LOGIN -->
+<section class="auth-wrap">
+  <div class="Formulario">
+    <h1>Sign In</h1>
+    <form id="loginForm" method="post" autocomplete="off">
+      <div class="username">
+        <input type="text" id="usuario" name="usuario" required placeholder="Username">
+        <label for="usuario">Username</label>
+      </div>
 
-        <div class="contrasena">
-          <input type="password" id="clave" name="clave" required placeholder="Contraseña">
-          <label for="clave">Contraseña</label>
-        </div>
+      <div class="contrasena">
+        <input type="password" id="clave" name="clave" required placeholder="Password">
+        <label for="clave">Password</label>
+      </div>
 
-        <div class="recordar">
-          <a href="recuperar.html">¿Olvidó su contraseña?</a>
-        </div>
+      <div class="recordar">
+        <a href="recuperar.html">Forgot your password?</a>
+      </div>
 
-        <input class="btn-primary" onclick="redirigir()"  type="button" value="Iniciar Sesión">
-<div id="mensaje" style="display:none;"></div>
+      <input class="btn-primary" onclick="redirigir()" type="button" value="Sign In">
+      <div id="mensaje" style="display:none;"></div>
 
-        <div class="registrarse">
-          ¿No tienes cuenta?
-          <a class="button" href="Registro.html">Registrarme</a>
-        </div>
-      </form>
-    </div>
-  </section>
+      <div class="registrarse">
+        Don't have an account?
+        <a class="button" href="Registro.html">Sign up</a>
+      </div>
+    </form>
+  </div>
+</section>
 
- 
+<!-- FOOTER -->
+<div class="footer">
+  <p>© 2025 SecLab — Security and Digital Trust</p>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <p>© 2025 SecLab — Seguridad y Confianza Digital</p>
-    <p>San José, Costa Rica | <a href="mailto:contacto@seclab.cr" style="color:inherit; text-decoration:underline">SecLab@gmail.com</a></p>
+ <p>San José, Costa Rica | <a href="mailto:contacto@seclab.cr" style="color:inherit; text-decoration:underline">SecLab@gmail.com</a></p>
   </div>
  <script type="module" src="JS/login.js" defer></script>
 
