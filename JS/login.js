@@ -52,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const correo = await resolverCorreo(entrada);
       await signInWithEmailAndPassword(auth, correo, clave);
 
-      msg.textContent   = "✅ Bienvenido a SecLab";
+      msg.textContent   = "✅ Welcome to SecLab";
       msg.className     = "mensaje exito";
       msg.style.display = "block";
       setTimeout(()=>window.location.href="inicio.html", 1200);
     } catch (err) {
-      let texto = "⚠️ Usuario o contraseña incorrectos.";
+      let texto = "⚠️ User or password incorrect.";
       if (err.message === "USUARIO_NO_ENCONTRADO") {
-        texto = "⚠️ Usuario no encontrado. (Prueba con tu correo)";
+        texto = "⚠️ User not found. (Try your mail)";
       }
       msg.textContent   = texto;
       msg.className     = "mensaje error";
