@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
       msg.textContent   = "✅ Bienvenido a SecLab";
       msg.className     = "mensaje exito";
       msg.style.display = "block";
-      setTimeout(()=>window.location.href="index.html", 1200);
+      setTimeout(()=>window.location.href="inicio.html", 1200);
     } catch (err) {
       let texto = "⚠️ Usuario o contraseña incorrectos.";
       if (err.message === "USUARIO_NO_ENCONTRADO") {
