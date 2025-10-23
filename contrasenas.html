@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="CSS/contrasenas.css" />
+  <title>Secure Passwords</title>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header class="hero-wrapper">
+    <h2>Passwords</h2>
+  </header>
+
+  <!-- Contenido Principal -->
+  <div class="fle">
+    
+    <!-- Columna izquierda -->
+    <div class="columna-izquierda">
+      <div class="hero-wrapper2">
+        <p class="reglas">
+         A strong password should include at least one letter, one capital letter, one number, and one special character.
+It should also be more than 8 characters long and not have two identical characters in a row.
+        </p>
+      </div>
+
+      <div class="tarjeta" id="tarjeta">
+        <input
+          class="input"
+          type="text"
+          name="nombre"
+          id="nombre"
+          placeholder="Escriba su contraseña"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="hero-text" id="hero-text">
+      <p class="btex" id="main"></p>
+      <p class="tex" id="letra"></p>
+      <p class="tex" id="repe"></p>
+      <p class="tex" id="falma"></p>
+      <p class="tex" id="falle"></p>
+      <p class="tex" id="num"></p>
+      <p class="tex" id="especiales"></p>
+    </div>
+
+  </div>
+
+  <!-- Botón de volver -->
+  <a href="inicio.html" class="boton" id="botoncito">Go back</a>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <p>&copy; 2025 SecLab. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- Script de validación -->
+  <script src="JS/contrasenas.js"></script>
+</body>
+</html>

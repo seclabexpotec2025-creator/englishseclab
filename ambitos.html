@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seguridad & Ransomware — Guía clara</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --dark-blue: #1E3A5F;
+      --light-beige: #F2EBE0;
+      --gold-accent: #D4AC5D;
+      --brown-detail: #6B5B51;
+      --white: #ffffff;
+      --radius: 14px;
+      --shadow: 0 8px 24px rgba(0,0,0,.12);
+      --divider: rgba(0,0,0,.08);
+    }
+
+    /* Base */
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 100% -10%, rgba(212,172,93,.15), transparent 60%),
+        radial-gradient(1000px 500px at 0% -10%, rgba(107,91,81,.10), transparent 60%),
+        var(--light-beige);
+      color: var(--dark-blue);
+      min-height:100vh; display:flex; flex-direction:column;
+    }
+
+    /* Header */
+     .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background-color: var(--white);
+            border-bottom: 1px solid #eee;
+            position: sticky; top: 0; z-index: 1000; width: 100%; box-sizing: border-box;
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: bold; color: var(--dark-blue); text-decoration: none; }
+        .nav-links { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; gap: 30px; }
+        .nav-links a { color: var(--dark-blue); text-decoration: none; font-weight: 500; }
+        .nav-links .button { padding: 8px 18px; margin-left: 15px; }
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: var(--gold-accent);
+            color: var(--dark-blue);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .button:hover { background-color: #c59b4b; transform: translateY(-3px); }
+
+
+    /* Layout */
+    .container{ width:min(1200px, 92vw); margin: 0 auto; }
+    .section{ padding: 56px 0; border-top: 1px solid var(--divider); scroll-margin-top:84px }
+    .section:first-of-type{ border-top: none }
+    .eyebrow{ text-transform:uppercase; letter-spacing:.12em; font-weight:800; color: var(--brown-detail); font-size:12px }
+    h1{ font-size: clamp(28px, 6vw, 56px); line-height:1.1; margin: 8px 0 10px }
+    h2{ font-size: clamp(22px, 3.4vw, 32px); margin-bottom: 14px }
+    p.lead{ color: var(--brown-detail); font-size: clamp(16px, 2.2vw, 18px); max-width: 900px }
+
+    /* Hero */
+    .hero{ padding: 56px 0 28px; position:relative; overflow:hidden }
+    .hero::before{
+      content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.75)), url('https://picsum.photos/1600/700?blur=5') center/cover; z-index:-1;
+    }
+    .hero .container{ display:grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items:center }
+    .panel{ background: var(--white); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+
+    /* KPIs */
+    .kpis{ display:flex; gap:14px; flex-wrap:wrap; margin-top:14px }
+    .kpi{ background:var(--white); border:1px solid var(--divider); border-radius:999px; padding:8px 12px; box-shadow:0 4px 14px rgba(0,0,0,.06); font-weight:700 }
+
+    /* Grids */
+    .cards{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items:stretch }
+    .cards.two{ grid-template-columns: repeat(2, minmax(0, 1fr)) }
+    .card{ background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; display:flex; flex-direction:column; min-height: 240px; position:relative; overflow:hidden }
+    .card::after{ content:""; position:absolute; right:-20px; top:-20px; width:140px; height:140px; border-radius:50%; background: radial-gradient(circle at center, rgba(212,172,93,.35), transparent 60%); pointer-events:none }
+    .card h3{ font-size:18px; margin-bottom:8px; display:flex; align-items:center; gap:6px }
+    .card h3 img{ width:20px; height:20px; object-fit:contain; display:inline-block }
+    .card h3 .icon{ width:20px; height:20px; display:inline-block; vertical-align:middle }
+    .card p, .card ul{ color: var(--brown-detail); line-height: 1.55; font-size: 15px }
+    .card ul{ padding-left: 18px; margin-top: 6px }
+
+    /* Numbered badge */
+    .badge{ width:32px; height:32px; border-radius:999px; display:grid; place-content:center; font-weight:800; background: linear-gradient(135deg, var(--gold-accent), #f3dba7); color:#2e2e2e; box-shadow:0 6px 18px rgba(212,172,93,.35); margin-bottom:8px }
+
+    /* Emphasis band */
+    .band{ background: #ffffff; border: 1px solid var(--divider); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow) }
+
+    /* CTA Banner */
+    .cta{ margin: 22px 0 0; display:flex; align-items:center; justify-content:space-between; gap:16px; background: linear-gradient(90deg, rgba(212,172,93,.18), rgba(107,91,81,.08)); border:1px solid var(--divider); border-radius: var(--radius); padding: 16px 18px }
+    .cta b{ font-size: 16px }
+    .cta button{ background: var(--gold-accent); color: var(--dark-blue); border:none; border-radius:999px; padding:10px 16px; font-weight:800; cursor:pointer; box-shadow:0 8px 24px rgba(212,172,93,.35); }
+    .cta button:hover{ filter:brightness(1.05) }
+
+    /* Enhancements */
+    #progress{position:fixed;left:0;top:0;height:3px;background:var(--gold-accent);width:0;z-index:999;box-shadow:0 2px 10px rgba(212,172,93,.5);}    
+    .js .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
+    .js .reveal.visible{opacity:1;transform:none}
+    .checklist{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:16px}
+    .checklist .item{background:var(--white);border:1px solid var(--divider);border-radius:var(--radius);padding:14px 16px;display:flex;gap:10px;align-items:flex-start;box-shadow:var(--shadow)}
+    .checklist input{margin-top:2px}
+
+    /* Footer */
+    footer{ padding:20px; background:var(--dark-blue); color:var(--white); text-align:center; font-size:14px }
+
+    /* To Top */
+    #toTop{ position:fixed; right:16px; bottom:18px; border:none; border-radius:999px; padding:10px 12px; font-weight:900; background:var(--gold-accent); color:var(--dark-blue); box-shadow:0 10px 24px rgba(0,0,0,.18); cursor:pointer; display:none }
+    #toTop.show{ display:block }
+
+    /* Responsive */
+    @media (max-width: 980px){ .hero .container{ grid-template-columns: 1fr } .cards{ grid-template-columns: repeat(2, minmax(0,1fr)) } }
+    @media (max-width: 560px){ .cards, .cards.two{ grid-template-columns: 1fr } header{ padding: 12px 16px } }
+  
+    /* === Overrides para asemejar estilo de referencia === */
+    /* Tipografías y títulos */
+    body{ background: var(--white); color: var(--brown-detail); font-family:'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, sans-serif; }
+    h1,h2,h3{ font-family:'Playfair Display', serif; color: var(--dark-blue); }
+    h1{ font-size:clamp(2.2rem,4vw,3.4rem); line-height:1.2; margin-bottom:16px }
+    h2{ font-size:clamp(1.9rem,3.2vw,3rem); text-align:center; margin-bottom:12px }
+    h3{ font-size:clamp(1.05rem,2.1vw,1.45rem); line-height:1.35; margin:0 }
+
+    /* Hero con fondo claro y tarjetas limpias */
+    .hero{ background: var(--light-beige); padding-bottom:110px }
+    .panel{ background:#fff; border-radius:12px; padding:24px; box-shadow: var(--shadow); border:1px solid #eee }
+
+    /* Tarjetas como las de la referencia */
+    .cards{ gap:22px }
+    .card{ background:#fff; border:1px solid #eee; border-radius:12px; box-shadow: var(--shadow); padding:20px }
+    .band{ background:#fff; border:1px solid #eee; border-radius:12px }
+
+    /* Badges tipo chip */
+    .badge{ width:max-content; font-size:.8rem; font-weight:700; letter-spacing:.2px; color:var(--dark-blue); background: var(--light-beige); border-radius:999px; padding:4px 10px; margin-bottom:10px }
+
+    /* Animación scroll como la referencia */
+    .hidden{opacity:0;transform:translateY(30px);transition:opacity .6s ease-out,transform .6s ease-out}
+    .show{opacity:1;transform:translateY(0)}
+
+    /* Responsive parecido */
+    @media (max-width:992px){ .hero{padding-bottom:80px} }
+</style>
+</head>
+<body>
+  <!-- SPRITE SVG OFFLINE (oculto) -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="ico-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></symbol>
+  <symbol id="ico-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></symbol>
+  <symbol id="ico-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="ico-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M14 12l7-7"/><path d="M18 5l3 3"/></symbol>
+  <symbol id="ico-building" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1"/><path d="M4 21V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14"/><path d="M8 21v-3a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/></symbol>
+  <symbol id="ico-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/></symbol>
+  <symbol id="ico-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v5m0 0l-5 3m5-3l5 3"/></symbol>
+  <symbol id="ico-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="ico-fingerprint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12a10 10 0 0 1 20 0"/><path d="M12 2a10 10 0 0 0-4 19"/><path d="M12 6a6 6 0 0 1 6 6"/><path d="M12 10a2 2 0 0 1 2 2"/><path d="M10 14a6 6 0 0 0 2 4"/></symbol>
+  <symbol id="ico-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 13h3v5H7zM12 9h3v9h-3zM17 5h3v13h-3z"/></symbol>
+  <symbol id="ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="ico-vault" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2"/><path d="M13 12h5"/></symbol>
+</svg>
+
+<div id="progress" aria-hidden="true"></div>
+  <header>
+  
+       
+     <nav class="navbar">
+        <a  src class="logo">SecLab</a>
+        <ul class="nav-links">
+          <li><a href="inicio.html">Home</a></li>
+    <li><a href="inicio.html#services">Information</a></li>
+       <li><a href="inicioactividades.html">Activities</a></li>
+<li><a class="button" href="team2.html">Contact Us</a></li>
+</ul>
+</nav>
+  
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+  <div class="container">
+    <div>
+      <div class="eyebrow">Practical Guide</div>
+      <h1>Protect your digital life from ransomware</h1>
+      <p class="lead">Clear, applicable tips for individuals and businesses. Use this guide to reduce risk, improve your digital habits, and organize basic defenses.</p>
+      <div class="kpis">
+        <span class="kpi">⚙️ Best practices</span>
+        <span class="kpi">🔐 Defense in depth</span>
+        <span class="kpi">🧭 Quick guide</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="eyebrow">Summary</div>
+      <p class="lead">• 4 key personal practices<br>• Download rules and network usage<br>• Microsegmentation and privilege control (Zero Trust) for PYMEs</p>
+      <!-- Image removed by request -->
+    </div>
+  </div>
+</section>
+
+<!-- PERSONAL -->
+<section id="personal" class="section">
+  <div class="container">
+    <h2>Personal</h2>
+    <div class="band reveal">
+      <p class="lead">Every internet user is a potential ransomware target. An unprotected device is easy to attack. Education and layered controls drastically reduce risk.</p>
+    </div>
+    <div class="cards" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">1</div>
+        <h3><svg class="icon"><use href="#ico-wifi"/></svg> VPN on public Wi-Fi</h3>
+        <p>Avoid sensitive transactions on open networks. Use a trustworthy VPN if you can’t postpone the connection.</p>
+        <ul>
+          <li>Prefer known networks or mobile tethering.</li>
+          <li>Sign out of banking and critical services.</li>
+          <li>Disable automatic connections to public Wi-Fi.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">2</div>
+        <h3><svg class="icon"><use href="#ico-shield"/></svg> Security software</h3>
+        <p>Keep antivirus/antimalware active and up to date; enable real-time protection and firewall.</p>
+        <ul>
+          <li>Update the operating system and apps.</li>
+          <li>Enable anti-phishing filters in browser and email.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">3</div>
+        <h3><svg class="icon"><use href="#ico-download"/></svg> Trusted downloads</h3>
+        <p>Prefer sites with <b>HTTPS</b>, trust seals, and a lock icon. Avoid suspicious links and attachments.</p>
+        <ul>
+          <li>Be wary of unexpected image names or files.</li>
+          <li>Verify the sender’s domain and the real URL.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">4</div>
+        <h3><svg class="icon"><use href="#ico-key"/></svg> Strong passwords & MFA</h3>
+        <p>Use unique, robust passwords (12–16+ characters) and complement them with MFA to stop the use of stolen credentials.</p>
+        <ul>
+          <li>Length and complexity: uppercase, lowercase, numbers, and symbols.</li>
+          <li>One password per service: avoid reuse across accounts.</li>
+          <li>Smart changes: rotate if there are signs of leaks or unusual access.</li>
+          <li>Strong MFA: TOTP, push, or FIDO2 keys (better than SMS).</li>
+          <li>Back up recovery codes in a safe place.</li>
+        </ul>
+      </div>
+      <!-- New: Password manager -->
+      <div class="card reveal">
+        <div class="badge">5</div>
+        <h3><svg class="icon"><use href="#ico-vault"/></svg> Password manager</h3>
+        <p>Centralize and generate long, unique passwords automatically. Reduces the risk of weak and reused passwords.</p>
+        <ul>
+          <li>Generate 16–24 character keys with true randomness.</li>
+          <li>Autofill with <em>domain matching</em> to avoid phishing.</li>
+          <li>Sync across devices and protect with the manager’s MFA.</li>
+        </ul>
+      </div>
+      <!-- New: Passkeys / FIDO2 -->
+      <div class="card reveal">
+        <div class="badge">6</div>
+        <h3><svg class="icon"><use href="#ico-fingerprint"/></svg> Passkeys (FIDO2/WebAuthn)</h3>
+        <p>Enable <b>passkeys</b> where available: phishing-resistant authentication that replaces or adds a layer to passwords.</p>
+        <ul>
+          <li>Register at least two authenticators (phone and hardware key).</li>
+          <li>Store recovery keys and test sign-in.</li>
+          <li>Prioritize critical services: email, banking, and storage.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cta">
+      <b>Quick tip:</b> set monthly reminders to update apps and check your backups.
+      <button type="button" onclick="document.getElementById('checklist').scrollIntoView({behavior:'smooth'});">View checklist</button>
+    </div>
+  </div>
+</section>
+
+<!-- EXTRA TIPS -->
+<section id="protegerte" class="section">
+  <div class="container">
+    <h2>Complementary best practices</h2>
+    <div class="cards two">
+      <div class="card reveal">
+        <div class="badge">A</div>
+        <h3>Backups</h3>
+        <p>3-2-1 rule: three copies, two different media, one offline or in the cloud with immutable versioning.</p>
+      </div>
+      <div class="card reveal">
+        <div class="badge">B</div>
+        <h3>Updates</h3>
+        <p>Enable automatic updates for the OS and applications. Patching closes exploitable vulnerabilities.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS -->
+<section id="empresarial" class="section">
+  <div class="container">
+    <h2>Business</h2>
+    <div class="band reveal">
+      <p class="lead">SMEs are frequent targets: fewer resources and processes, but valuable data. Implement defense in depth, microsegmentation, and strict privilege control.</p>
+    </div>
+
+    <!-- Block 1: overview -->
+    <div class="cards" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">1</div>
+        <h3><svg class="icon"><use href="#ico-building"/></svg> SME vulnerability</h3>
+        <p>Budget and staff constraints increase exposure to targeted and opportunistic ransomware campaigns.</p>
+        <ul>
+          <li>Lower maturity in processes and incident response.</li>
+          <li>Gaps due to third-party dependencies.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">2</div>
+        <h3><svg class="icon"><use href="#ico-database"/></svg> Value of information</h3>
+        <p>Customer, supplier, billing, and IP data are monetizable and targets for extortion.</p>
+        <ul>
+          <li>Reputational damage and penalties.</li>
+          <li>Operational disruption and blackmail.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">3</div>
+        <h3><svg class="icon"><use href="#ico-network"/></svg> Microsegmentation</h3>
+        <p>Divide the network into segments with their own policies and access to contain lateral movement.</p>
+        <ul>
+          <li>Visibility of data flows.</li>
+          <li>Policies adaptable to app changes.</li>
+          <li>Aligned with <b>Zero Trust</b>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Block 2: Access & privileges (Zero Trust) -->
+    <div class="band reveal" style="margin-top:22px"><strong>Access control and Zero Trust</strong>: limiting privileges reduces the attack surface and the impact of intrusions. Zero Trust requires continuously verifying identity, device, and context before granting access.</div>
+
+    <div class="cards" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">A</div>
+        <h3><svg class="icon"><use href="#ico-key"/></svg> Least privilege (PLP)</h3>
+        <p>Grant only the access strictly necessary for the job function.</p>
+        <ul>
+          <li>Role profiles (RBAC) and separation of duties.</li>
+          <li>Quarterly access reviews.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">B</div>
+        <h3><svg class="icon"><use href="#ico-shield-check"/></svg> Zero Trust</h3>
+        <p>Don’t trust by default: continuously validate identity and device posture.</p>
+        <ul>
+          <li>Context: location, time, risk.</li>
+          <li>Conditional access and micro-authorization.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">C</div>
+        <h3><svg class="icon"><use href="#ico-key"/></svg> PAM (privileged access)</h3>
+        <p>Manage and audit privileged accounts with a vault, rotation, and session recording.</p>
+        <ul>
+          <li>Credentials in a vault with automatic rotation.</li>
+          <li>Session recording and alerts.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cards" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">D</div>
+        <h3><svg class="icon"><use href="#ico-lock"/></svg> Remove local admin & JIT</h3>
+        <p>Remove local administrator rights and use Just-In-Time elevation (temporary and approved).</p>
+        <ul>
+          <li>Less persistence and impact from malware.</li>
+          <li>Automatic privilege expiration.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">E</div>
+        <h3><svg class="icon"><use href="#ico-fingerprint"/></svg> MFA for critical accounts</h3>
+        <p>Require strong MFA (TOTP, push, or FIDO2) for admins, remote access, and sensitive data.</p>
+        <ul>
+          <li>Blocks the use of stolen passwords.</li>
+          <li>Hardens VPN/SSH/RDP access.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">F</div>
+        <h3><svg class="icon"><use href="#ico-chart"/></svg> Audit and review</h3>
+        <p>Monitor access, generate immutable logs, and review permissions periodically.</p>
+        <ul>
+          <li>Alerts for anomalous activity.</li>
+          <li>Access re-certification campaigns.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISUAL CHECKLIST -->
+<section id="checklist" class="section">
+  <div class="container">
+    <h2>Quick checklist</h2>
+    <div class="checklist">
+      <label class="item reveal"><input type="checkbox"> Keep antivirus and OS up to date</label>
+      <label class="item reveal"><input type="checkbox"> Verify HTTPS and source before downloading</label>
+      <label class="item reveal"><input type="checkbox"> Do 3-2-1 backups monthly</label>
+    </div>
+  </div>
+</section>
+
+<!-- ADDITIONAL CONTENT -->
+<section id="extra" class="section">
+  <div class="container">
+    <h2>Data backup</h2>
+    <div class="band reveal">
+      <p class="lead">Data backup is the best way to protect against ransomware. A clean, isolated backup allows you to recover without paying ransoms.</p>
+    </div>
+
+    <!-- Block 1 -->
+    <div class="cards two" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">1</div>
+        <h3>Offline copies</h3>
+        <p>Keep a secondary copy offline (e.g., tape or disconnected device) to avoid simultaneous encryption.</p>
+        <ul>
+          <li>Physically disconnect after finishing the backup.</li>
+          <li>Store in a separate location.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">2</div>
+        <h3>Immutable storage</h3>
+        <p>Use WORM (Write-Once-Read-Many) or <em>object lock</em> to prevent modifications and deletion of copies.</p>
+        <ul>
+          <li>Retention policies and <em>legal hold</em>.</li>
+          <li>Protects against malicious deletion.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Block 2 -->
+    <div class="cards two" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">3</div>
+        <h3>Protection on backup servers</h3>
+        <p>Deploy EDR/antimalware on backup servers to detect and isolate encryption behavior.</p>
+        <ul>
+          <li>Automatic blocking and quarantine.</li>
+          <li>Alerts for mass-encryption processes.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">4</div>
+        <h3>Backup frequency</h3>
+        <p>For critical data, back up at least hourly. Adjust RPO/RTO based on business impact.</p>
+        <ul>
+          <li>Frequent incrementals, scheduled fulls.</li>
+          <li>Prioritize databases and key systems.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Block 3 -->
+    <div class="cards two" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">5</div>
+        <h3>3-2-1-1-0 rule</h3>
+        <p>3 copies, on 2 types of media, 1 off-site, 1 immutable/offline, and 0 verified errors.</p>
+        <ul>
+          <li>Automate integrity checks.</li>
+          <li>Ensure there are no errors in logs.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">6</div>
+        <h3>Separate network / Air-gap</h3>
+        <p>Segment the backup network or use a logical/physical <em>air-gap</em> to isolate repositories from the rest of the environment.</p>
+        <ul>
+          <li>Restricted access and allow-lists.</li>
+          <li>Disable unnecessary administrative paths.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Block 4 -->
+    <div class="cards two" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">7</div>
+        <h3>Restore tests</h3>
+        <p>Rehearse periodic restores (partial and full) to validate real timings and procedures.</p>
+        <ul>
+          <li>Simulate ransomware scenarios.</li>
+          <li>Document steps and owners.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">8</div>
+        <h3>Encryption and keys</h3>
+        <p>Encrypt backups in transit and at rest. Manage keys with KMS/HSM and scheduled rotation.</p>
+        <ul>
+          <li>Separate keys from repositories.</li>
+          <li>Strict access control to the KMS.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Block 5 -->
+    <div class="cards two" style="margin-top:16px">
+      <div class="card reveal">
+        <div class="badge">9</div>
+        <h3>Versioning and retention</h3>
+        <p>Enable multiple versions and sufficient retention to prevent overwriting clean copies.</p>
+        <ul>
+          <li>Retention tailored by criticality.</li>
+          <li>Avoid overly short rotation windows.</li>
+        </ul>
+      </div>
+      <div class="card reveal">
+        <div class="badge">10</div>
+        <h3>Monitoring and anomalies</h3>
+        <p>Use alerts for anomalous spikes in changes/encryption and for backup job failures.</p>
+        <ul>
+          <li>Real-time dashboards and notifications.</li>
+          <li>Integration with SIEM/SOAR.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="band reveal" style="margin-top:22px">
+      <strong>Tip:</strong> document your <b>recovery plan</b> (RTO/RPO, owners, steps) and review it after each exercise.
+    </div>
+  </div>
+</section>
+
+<footer id="footer">
+  © <span id="y"></span> SecuLab — Privacy · Terms · Support
+</footer>
+
+  <button id="toTop" aria-label="Volver arriba">↑</button>
+
+  <script>
+    // Habilitar clases dependientes de JS
+    document.body.classList.add('js');
+
+    // Año dinámico
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Progreso de scroll
+    const progress = document.getElementById('progress');
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = Math.max(h.scrollHeight - h.clientHeight, 1);
+      const scrolled = h.scrollTop / max;
+      progress.style.width = (scrolled * 100) + '%';
+    };
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+
+    // Revelado al hacer scroll (con fallback)
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+      }, {threshold: 0.12});
+      document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('visible'));
+    }
+
+    // Botón volver arriba
+    const toTop = document.getElementById('toTop');
+    if(toTop){
+      window.addEventListener('scroll', () => {
+        if(window.scrollY > 500){ toTop.classList.add('show'); } else { toTop.classList.remove('show'); }
+      });
+      toTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fundamentos de la Ciberseguridad</title>
+
+  <!-- Fuentes -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- Paleta de Colores --- */
+    :root {
+      --dark-blue: #1E3A5F;
+      --light-beige: #F2EBE0;
+      --gold-accent: #D4AC5D;
+      --brown-detail: #6B5B51;
+      --white: #ffffff;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    /* --- Estilos base --- */
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--brown-detail);
+      line-height: 1.7;
+      background: var(--white);
+    }
+
+    /* --- Navbar --- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 30px;
+      background-color: var(--white);
+      border-bottom: 1px solid #eee;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      color: var(--dark-blue);
+      font-size: 1.4rem;
+    }
+
+    .logo img { height: 28px; width: auto; display: block; }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0; padding: 0;
+    }
+    .nav-links a {
+      text-decoration: none; color: var(--dark-blue); font-weight: 500;
+      transition: color 0.3s ease, transform 0.2s ease;
+    }
+    .nav-links a:hover { color: var(--gold-accent); transform: translateY(-2px); }
+    .button {
+      background: var(--gold-accent); color: var(--dark-blue);
+      padding: 8px 14px; border-radius: 8px; font-weight: 700;
+      transition: all 0.3s ease;
+    }
+    .button:hover { background: #c59b4b; color: var(--white); }
+
+    /* --- Header --- */
+    header {
+      background: var(--light-beige);
+      text-align: center;
+      padding: 50px 20px 30px;
+      border-bottom: 1px solid #eee;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      color: var(--dark-blue);
+      margin-bottom: 10px;
+    }
+    .intro { max-width: 800px; margin: 0 auto; color: #555; font-size: 1rem; }
+
+    /* --- Contenedor principal --- */
+    .container { max-width: 1100px; margin: 0 auto; padding: 50px 20px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+    @media (min-width: 860px) { .grid { grid-template-columns: 1fr 1fr; } }
+
+    /* --- "Tarjetas" plegables con <details> --- */
+    details.card {
+      background: var(--white);
+      border: 1px solid #eee;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, opacity .25s ease;
+      overflow: clip; /* recorta bordes al expandir */
+    }
+
+    /* Estado "portada": solo se ve el summary */
+    details.card summary {
+      list-style: none; /* quita triángulo */
+      cursor: pointer;
+      padding: 18px 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    /* Indicador personalizado en lugar del triángulo nativo */
+    details.card summary::after{
+      content: "＋";
+      margin-left: auto;
+      font-weight: 800;
+      color: var(--dark-blue);
+      transition: transform .25s ease;
+    }
+    details[open].card summary::after{ content: "—"; transform: rotate(0deg); }
+
+    /* Estética portada */
+    .tag {
+      display: inline-block;
+      background: var(--light-beige);
+      color: var(--dark-blue);
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+    details.card h3 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      color: var(--dark-blue);
+      font-size: 1.25rem;
+    }
+
+    /* Cuerpo expandible (lo que se oculta) */
+    .card-body{
+      padding: 0 20px 18px;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .35s ease, opacity .25s ease, padding-top .25s ease;
+    }
+    details[open] .card-body{
+      max-height: 1200px; /* suficiente para tu contenido */
+      opacity: 1;
+      padding-top: 6px;
+    }
+    .card-body p{ color:#555; margin: 10px 0 0; font-size: .98rem; }
+
+    /* Enfoque visual al pasar el cursor */
+    .grid:hover details.card{ transform: scale(.98); opacity: .85; }
+    details.card:hover { transform: scale(1.03); opacity: 1; z-index: 1;
+      box-shadow: 0 14px 30px rgba(0,0,0,.12); border-color: rgba(212,172,93,0.4);
+    }
+    details[open].card{ transform: scale(1.01); } /* ligero énfasis al abrir */
+
+    /* Accesibilidad: foco teclado */
+    details.card summary:focus{ outline: none; }
+    details.card summary:focus-visible{
+      box-shadow: 0 0 0 3px rgba(212,172,93,.45) inset;
+      border-radius: 10px;
+    }
+
+    /* Prefiere menos movimiento */
+    @media (prefers-reduced-motion: reduce){
+      .grid:hover details.card, details.card:hover, details[open].card{ transform:none }
+      .card-body{ transition:none; }
+    }
+
+    /* --- Footer --- */
+    footer {
+      background: var(--dark-blue);
+      color: var(--light-beige);
+      text-align: center;
+      padding: 25px 15px;
+      font-size: 0.9rem;
+      margin-top: 50px;
+    }
+
+    #testimonials {
+  justify-self: center;
+  width: 80%; /* opcional, hace que quede más proporcionado al centro */
+}
+
+@media (min-width: 860px){
+   #testimonials {
+     grid-column: 1 / -1; /* ocupa toda la fila en pantallas grandes */
+    width: 70%;
+    margin: 0 auto;
+   }
+   
+
+}
+  </style>
+<head>
+<body>
+
+  <!-- NAVBAR -->
+      
+     <nav class="navbar">
+        <a  src class="logo">SecLab</a>
+        <ul class="nav-links">
+          <li><a href="inicio.html">Home</a></li>
+    <li><a href="inicio.html#services">Information</a></li>
+       <li><a href="inicioactividades.html">Activities</a></li>
+<li><a class="button" href="team2.html">Contact Us</a></li>
+</ul>
+</nav>
+  <!-- HEADER -->
+<header id="top">
+  <h1>Cybersecurity Fundamentals</h1>
+  <p class="intro">
+    If we want strong security for the technological resources PYMEs have, we must start by defining what it is, the practices we should follow to enjoy good cybersecurity, and the key resources that can help secure your PYME.
+  </p>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="container">
+  <section class="grid" id="services">
+
+    <!-- CONCEPT -->
+    <details class="card">
+      <summary>
+        <span class="tag">Key concepts</span>
+        <h3>Cybersecurity concept</h3>
+      </summary>
+      <div class="card-body">
+        <p>According to a 2024 IBM article, cybersecurity refers to all the technologies, practices, and policies implemented to <strong>prevent cyberattacks or mitigate their impact.</strong> In essence, cybersecurity aims to protect people’s vulnerable devices, systems, networks, applications, and data from any cyberthreat they may face.</p>
+        <p><strong>Why is it important?</strong> Cybersecurity matters because cyberattacks and cybercrime have the power to disrupt, damage, or destroy businesses and lives. Successful attacks lead to identity theft, corporate extortion, loss of confidential information, temporary business interruptions, loss of customers and revenue, and in some cases, business closures.</p>
+      </div>
+    </details>
+
+    <!-- CIA -->
+    <details class="card" id="about">
+      <summary>
+        <span class="tag">CIA</span>
+        <h3>Fundamental principles</h3>
+      </summary>
+      <div class="card-body">
+        <p><strong>Confidentiality</strong>, <strong>Integrity</strong>, and <strong>Availability</strong> (CIA) is a foundational model for designing security systems that is <strong>used to find vulnerabilities and create solutions</strong>, or to evaluate what went wrong and what worked after an incident.</p>
+        <p><strong>Confidentiality</strong> involves efforts to ensure data remains private and to control access to information to prevent unauthorized sharing.</p>
+        <p><strong>Integrity</strong> means ensuring that data is reliable and free from alteration.</p>
+        <p>Finally, <strong>Availability</strong> ensures that systems and networks are accessible to the right people when they need them.</p>
+      </div>
+    </details>
+
+    <!-- THREATS -->
+    <details class="card">
+      <summary>
+        <span class="tag">Threat landscape</span>
+        <h3>Cyber threats</h3>
+      </summary>
+      <div class="card-body">
+        <p>Cyber threats are <strong>activities or events that can harm a network or system for malicious purposes</strong> (identity theft, intrusion, data theft, etc.). They can seriously affect business reputation and continuity.</p>
+        <p><strong>Malware:</strong> Malware is malicious software that can achieve many goals on an infected system. Common examples include: Trojan horses, viruses, and—our focus here at SecLab—ransomware.</p>
+        <p><strong>Social engineering:</strong> This technique uses tricks, coercion, and other forms of psychological manipulation to get what the attacker wants. Common tactics include: phishing (the attacker poses as a trusted sender, usually via email), smishing (often posing as parcel-service staff via text message), and vishing (posing as a major company over the phone to obtain private data such as passwords or card numbers).</p>
+        <p><strong>Web application attacks:</strong> Web apps are a key part of how an organization connects with the public. Common vulnerabilities include: SQL injection (SQL is a language for interacting with databases; used maliciously it can mix data and instructions), Remote Code Execution (RCE allows an attacker to run malicious code on an organization’s systems), and Cross-Site Scripting (XSS leverages injection, access-control flaws, and other weaknesses to insert malicious scripts).</p>
+        <p><strong>DoS attacks:</strong> These attacks are designed to disrupt a service. The most common are: DDoS (multiple devices flood a service with requests to overwhelm it) and RDoS (the attacker demands payment in exchange for NOT launching—or for stopping—a DDoS attack).</p>
+        <p><strong>MITM:</strong> Man-in-the-Middle attacks focus on intercepting communications between users and third parties. Two common types are: when the attacker intercepts traffic between its source and destination (spoofing), and when the attacker uses a user’s browser to plant malicious code and read or modify data before it reaches the server or before the user can view it (hijacking).</p>
+      </div>
+    </details>
+
+    <!-- DEFENSES -->
+    <details class="card">
+      <summary>
+        <span class="tag">Defenses</span>
+        <h3>Protection mechanisms and tools</h3>
+      </summary>
+      <div class="card-body">
+        <p>There are tools that help solve many of today’s cyber problems, helping users, businesses, and organizations <strong>keep their files, personal data, and identity fully secure.</strong> Some of these tools include:</p>
+        <p><strong>Firewalls:</strong> Firewalls control traffic and inspect packets entering and leaving the network, acting as its gatekeepers.</p>
+        <p><strong>Virtual Private Networks (VPNs):</strong> VPNs create, over the internet, a connection that allows users to browse safely—even on untrusted networks. This tool encrypts user data as it passes through the device and the network in use, making information unreadable to any interceptor.</p>
+        <p><strong>Intrusion Detection Systems (IDS):</strong> Cybersecurity tools that monitor network traffic to identify suspicious activity or policy violations.</p>
+        <p><strong>Antivirus software:</strong> Fundamental for protection against malware and its variants, scanning all files or programs on a device for traces of malware or suspicious behavior and, upon detecting a problem, sending it to quarantine or removing it automatically.</p>
+      </div>
+    </details>
+
+    <!-- NETWORKS / OS -->
+    <details class="card" id="testimonials">
+      <summary>
+        <span class="tag">Best practices</span>
+        <h3>Network and Operating System security</h3>
+      </summary>
+      <div class="card-body">
+        <p>Network and OS security refers to <strong>best practices, techniques, and solutions for cyber risks.</strong> As technology advances and evolves, cyberattacks increase. There are many security practices to adopt in companies and even in day-to-day life:</p>
+        <p><strong>Network segmentation in practice:</strong> A technique that divides the network into smaller segments, making it easier to maintain control over your network and data, reducing ways an attacker can gain unauthorized access—an effective path to keeping a network organized and safer.</p>
+        <p><strong>Multi-factor Authentication (MFA):</strong> MFA verifies user identity by requiring two or more unique factors such as facial recognition, passwords, or fingerprints. Many devices already require some form of identity check, but for network security it’s essential to add an extra layer in case someone attempts to access private data.</p>
+        <p><strong>Virtual Private Networks:</strong> Because VPNs encrypt data and information over the internet, they establish secure connections that make it harder to trace a user’s—or a company’s—activity. As technology evolves, VPNs become increasingly important for the growth of businesses, organizations, and public places that provide network access.</p>
+      </div>
+    </details>
+
+  </section>
+</main>
+
+
+  <footer>
+     <!-- FOOTER -->
+  
+    <p>© 2025 SecLab — Seguridad y Confianza Digital</p>
+    <p>San José, Costa Rica | <a href="mailto:contacto@seclab.cr" style="color:inherit; text-decoration:underline">SecLab@gmail.com</a></p>
+  </div>
+  </footer>
+</body>
+</html>
